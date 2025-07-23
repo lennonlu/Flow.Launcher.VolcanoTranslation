@@ -55,7 +55,9 @@ async function callTranslationAPI(text) {
 
     if (!targetLang) {
       // 如果仍然没有目标语言，根据文本内容判断
-      const hasChinese = /[\u4e00-\u9fa5]/.test(cleanedText);
+      const hasJapanese = /[\u3040-\u309F\u30A0-\u30FF]/.test(cleanedText); // 平假名和片假名
+      const hasKorean = /[\uAC00-\uD7AF]/.test(cleanedText);  // 韩文字母
+      const hasChinese = !hasJapanese && !hasKorean && /[\u4e00-\u9fa5]/.test(cleanedText);// 包含汉字但不含假名和韩文字母时，才视为中文
       targetLang = hasChinese ? "en" : "zh";
     }
 
